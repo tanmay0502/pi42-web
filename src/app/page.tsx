@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import React, { useEffect } from "react";
-import getCList from "./Fetchdata";
+import getCList from "./fetchdata";
 export default function Home() {
   useEffect(() => {
     getCList();
