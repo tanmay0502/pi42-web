@@ -35,15 +35,17 @@ export default function Home() {
       socket.onmessage = function (event) {
         console.log(`Data received from server: ${event.data}`);
         if (event.data === '3probe') {
-          socket.send('5');
-          
-          //socket.send('42["subscribe",{params: ["btcinr@aggTrade", "btcinr@depth_0.1"]}]');
+         socket.send('5');
+
+         socket.send('40');
+        //  socket.send('42["subscribe",]');
+          // socket.send('42["subscribe",{params: ["btcinr@aggTrade", "btcinr@depth_0.1"]}]');
           //socket.send('42["subscribe",{params: ["btcinr@markPrice", "btcinr@ticker"]}]');
           //socket.send('42["subscribe", {params: ["btcinr@kline_15m"]}]')
-          socket.send('3');
+          // socket.send('3');
         }else{
           console.log(`Data received from server: ${event.data}`);
-          socket.send('43["subscribe",{params: ["btcinr@aggTrade", "btcinr@depth_0.1"]}]');
+          // socket.send('43["subscribe",{params: ["btcinr@aggTrade", "btcinr@depth_0.1"]}]');
         }
       };
     }
