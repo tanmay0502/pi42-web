@@ -1,7 +1,8 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Table from '@/components/Table';
 import getCList from '@/components/fetchSID';
+import { count } from 'console';
 
 const CryptoContractsPage: React.FC = () => {
 
@@ -9,6 +10,9 @@ const CryptoContractsPage: React.FC = () => {
   const [sortOption, setSortOption] = useState<string>("default");
   const [contractsArray, setContractsArray] = useState<any[]>([]);
   const [sortedContracts, setSortedContracts] = useState<any[]>([]); 
+  const isSubscribed = useRef(false);
+  const [contractsObject, setContractsObject] = useState<Record<string, any>>({}); 
+  const [high, setHigh] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSid = async () => {
@@ -19,6 +23,7 @@ const CryptoContractsPage: React.FC = () => {
     };
     fetchSid();
   }, []);
+  
 
   useEffect(() => {
     if (sid) {
@@ -42,7 +47,6 @@ const CryptoContractsPage: React.FC = () => {
           console.log("Received 3probe, sending further initialization messages...");
           socket.send('5');
           socket.send('40');
-          
         } else {
           try {
             const dataArray = JSON.parse(event.data.substring(2)); 
@@ -58,12 +62,25 @@ const CryptoContractsPage: React.FC = () => {
               setContractsArray(contractsArray);
             
               // Generate the params array
-              const params = contractsArray.map(contract => `${contract.name.toLowerCase()}@ticker`);
-            
-              socket.send(`42["subscribe",{"params":${JSON.stringify(params)}}]`);
+              if (!isSubscribed.current) {
+                const params = contractsArray.map(contract => `${contract.name.toLowerCase()}@ticker`);
+                socket.send(`42["subscribe",{"params":${JSON.stringify(params)}}]`);
+                isSubscribed.current = true;
+              }
             }else if( messageType === '24hrTicker'){
-              console.log({messageData})
+
+              setContractsObject(prevContracts => ({
+                ...prevContracts,
+                [messageData.s]: {
+                  ...prevContracts[messageData.s],
+                  '24hrLow': messageData.l,
+                  '24hrHigh': messageData.h
+                }
+              }));
             }
+
+              
+            
           } catch (error) {
             console.error(`Error parsing WebSocket message: ${error}`);
           }
@@ -72,6 +89,32 @@ const CryptoContractsPage: React.FC = () => {
       
     }
   }, [sid]);
+
+
+  // useEffect(() => {
+  //   if((Object.keys(contractsObject).length === contractsArray.length) && !high ){
+  //     console.log(contractsObject)
+  //     console.log(contractsArray)
+
+  //       const updatedContractsArray = contractsArray.map(contract => {
+  //         const contractDetails = contractsObject[contract.name];
+  //         if (contractDetails) {
+  //           return {
+  //             ...contract,
+  //             '24hrHigh': contractDetails['24hrHigh'],
+  //             '24hrLow': contractDetails['24hrLow']
+  //           };
+  //         } else {
+  //           return contract;
+  //         }
+
+  //       });
+
+  //       setContractsArray(updatedContractsArray);
+  //       setHigh(true);
+  //   }
+          
+  // }, [contractsObject]);
 
   useEffect(() => {
     const sortedContracts = [...contractsArray].sort((a, b) => {
@@ -102,7 +145,7 @@ const CryptoContractsPage: React.FC = () => {
         <option value="ascending">Ascending</option>
         <option value="descending">Descending</option>
       </select>
-      <Table contracts={sortedContracts} /> 
+      <Table contracts={sortedContracts} margin = {contractsObject} /> 
     </div>
   );
 }

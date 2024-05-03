@@ -5,10 +5,16 @@ type Contract = {
   lastPrice: string;
   priceChangePercent: string;
   baseAssetVolume: string;
-  
 };
 
-const Table = ({ contracts }: { contracts: Contract[] }) => {
+type Margin = {
+  [name: string]: {
+    '24hrHigh': string;
+    '24hrLow': string;
+  };
+};
+
+const Table = ({ contracts, margin }: { contracts: Contract[], margin: Margin }) => {
   return (
     <table>
       <thead>
@@ -29,8 +35,8 @@ const Table = ({ contracts }: { contracts: Contract[] }) => {
             <td>{contract.lastPrice}</td>
             <td>{contract.priceChangePercent}</td>
             <td>{contract.baseAssetVolume}</td>
-            <td>Placeholder</td>
-            <td>Placeholder</td>
+            <td>{margin[contract.name]?.['24hrHigh'] || 'N/A'}</td>
+            <td>{margin[contract.name]?.['24hrLow'] || 'N/A'}</td>
             <td>Placeholder</td>
           </tr>
         ))}
