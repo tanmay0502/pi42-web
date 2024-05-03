@@ -52,7 +52,7 @@ const CryptoContractsPage: React.FC = () => {
             if (messageType === "allContractDetails") {
               const contractsArray = Object.entries(messageData).map(([contractName, contractDetails]) => ({
                 name: contractName,
-                ...contractDetails
+                ...contractDetails as object
               }));
             
               setContractsArray(contractsArray);
@@ -61,8 +61,7 @@ const CryptoContractsPage: React.FC = () => {
               const params = contractsArray.map(contract => `${contract.name.toLowerCase()}@ticker`);
             
               socket.send(`42["subscribe",{"params":${JSON.stringify(params)}}]`);
-            }
-            else if( messageType === '24hrTicker'){
+            }else if( messageType === '24hrTicker'){
               console.log({messageData})
             }
           } catch (error) {

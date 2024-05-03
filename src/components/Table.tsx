@@ -1,6 +1,14 @@
 import React from 'react';
 
-const Table = ({ contracts }) => {
+type Contract = {
+  name: string;
+  lastPrice: string;
+  priceChangePercent: string;
+  baseAssetVolume: string;
+  
+};
+
+const Table = ({ contracts }: { contracts: Contract[] }) => {
   return (
     <table>
       <thead>
@@ -15,7 +23,7 @@ const Table = ({ contracts }) => {
         </tr>
       </thead>
       <tbody>
-        {contracts.map((contract, index) => (
+        {contracts.map((contract: Contract, index: number) => (
           <tr key={index}>
             <td>{contract.name}</td>
             <td>{contract.lastPrice}</td>
