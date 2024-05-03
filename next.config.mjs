@@ -3,7 +3,7 @@ const nextConfig = {
     async rewrites() {
       return [
         {
-          source: '/api/socket.io/:path*',
+          source: '/api/:path*',
           destination: 'https://fawss.pi42.com/socket.io/:path*', 
         },
       ];
