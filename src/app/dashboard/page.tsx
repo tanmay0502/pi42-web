@@ -4,7 +4,7 @@ import ShowTableData from '@/app/dashboard/showTableData'
 
 function Dashboard() {
   return (
-
+        
         <ShowTableData />
 
   )

@@ -138,13 +138,14 @@ const CryptoContractsPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Crypto Contracts</h1>
-      <select value={sortOption} onChange={handleSortChange}>
-        <option value="default">Default</option>
-        <option value="ascending">Ascending</option>
-        <option value="descending">Descending</option>
-      </select>
+    <div className='container'>
+        <h1>Crypto Contracts</h1>
+        <p className=''>Sort By 24 Hour Percentage Change?</p>
+        <select value={sortOption} onChange={handleSortChange}>
+          <option value="default">Default</option>
+          <option value="ascending">Ascending</option>
+          <option value="descending">Descending</option>
+        </select>
       <Table contracts={sortedContracts} margin = {contractsObject} /> 
     </div>
   );
