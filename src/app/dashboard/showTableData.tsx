@@ -27,7 +27,7 @@ const CryptoContractsPage: React.FC = () => {
 
   useEffect(() => {
     if (sid) {
-      const socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
+      let socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
       
       socket.onopen = function (event) {
         console.log("WebSocket is open now.");
@@ -35,7 +35,8 @@ const CryptoContractsPage: React.FC = () => {
       };
   
       socket.onclose = function (event) {
-        console.log("WebSocket is closed now.");
+          console.log("Web socket is closed now")
+          socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
       };
   
       socket.onerror = function (error) {
@@ -48,7 +49,7 @@ const CryptoContractsPage: React.FC = () => {
           socket.send('5');
           socket.send('40');
         } else {
-          if (event.data) {
+          if (event.data.length > 2) {
             const dataArray = JSON.parse(event.data.substring(2)); 
             const messageType = dataArray[0];
             const messageData = dataArray[1];
