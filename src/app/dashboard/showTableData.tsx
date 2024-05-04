@@ -48,7 +48,7 @@ const CryptoContractsPage: React.FC = () => {
           socket.send('5');
           socket.send('40');
         } else {
-          try {
+          if (event.data) {
             const dataArray = JSON.parse(event.data.substring(2)); 
             const messageType = dataArray[0];
             const messageData = dataArray[1];
@@ -60,8 +60,7 @@ const CryptoContractsPage: React.FC = () => {
               }));
             
               setContractsArray(contractsArray);
-            
-              // Generate the params array
+
               if (!isSubscribed.current) {
                 const params = contractsArray.map(contract => `${contract.name.toLowerCase()}@ticker`);
                 socket.send(`42["subscribe",{"params":${JSON.stringify(params)}}]`);
@@ -78,43 +77,15 @@ const CryptoContractsPage: React.FC = () => {
                 }
               }));
             }
-
-              
-            
-          } catch (error) {
-            console.error(`Error parsing WebSocket message: ${error}`);
+ 
+          }else{
+            console.log(`Empty event.data`);
           }
         }
       };
       
     }
   }, [sid]);
-
-
-  // useEffect(() => {
-  //   if((Object.keys(contractsObject).length === contractsArray.length) && !high ){
-  //     console.log(contractsObject)
-  //     console.log(contractsArray)
-
-  //       const updatedContractsArray = contractsArray.map(contract => {
-  //         const contractDetails = contractsObject[contract.name];
-  //         if (contractDetails) {
-  //           return {
-  //             ...contract,
-  //             '24hrHigh': contractDetails['24hrHigh'],
-  //             '24hrLow': contractDetails['24hrLow']
-  //           };
-  //         } else {
-  //           return contract;
-  //         }
-
-  //       });
-
-  //       setContractsArray(updatedContractsArray);
-  //       setHigh(true);
-  //   }
-          
-  // }, [contractsObject]);
 
   useEffect(() => {
     const sortedContracts = [...contractsArray].sort((a, b) => {
