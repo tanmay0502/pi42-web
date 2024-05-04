@@ -4,9 +4,9 @@ import ShowTableData from '@/app/dashboard/showTableData'
 
 function Dashboard() {
   return (
-        
-        <ShowTableData />
-
+    <main className="flex min-h-screen flex-col items-center justify-between pt-8">
+      <ShowTableData />
+    </main>
   )
 }
 
