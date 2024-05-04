@@ -67,8 +67,8 @@ const Table = ({ contracts, margin }: { contracts: Contract[], margin: Margin })
               {parseFloat(contract.priceChangePercent).toLocaleString('en-IN')}%
             </td>
             <td>{parseFloat(contract.baseAssetVolume).toLocaleString('en-IN')}</td>
-            <td>{margin[contract.name]?.['24hrHigh'] || 'Loading..'}</td>
-            <td>{margin[contract.name]?.['24hrLow'] || 'Loading..'}</td>
+            <td>{margin[contract.name]?.['24hrHigh'] ? parseFloat(margin[contract.name]['24hrHigh']).toLocaleString('en-IN') : 'Loading..'}</td>
+            <td>{margin[contract.name]?.['24hrLow'] ? parseFloat(margin[contract.name]['24hrLow']).toLocaleString('en-IN') : 'Loading..'}</td>
             <td><button onClick={() => handleShare(contract)}>Share</button></td>
           </tr>
         ))}

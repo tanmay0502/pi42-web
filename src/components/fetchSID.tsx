@@ -1,4 +1,4 @@
-const getCList = async () => {
+const getSID = async () => {
   const res = await fetch('/api/socket.io/?EIO=4&transport=polling&t=OyxwY4I');
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
@@ -10,4 +10,4 @@ const getCList = async () => {
   return sid; 
 }
 
-export default getCList;
+export default getSID;

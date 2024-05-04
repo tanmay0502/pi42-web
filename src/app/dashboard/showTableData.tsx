@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState, useRef } from 'react';
 import Table from '@/components/Table';
-import getCList from '@/components/fetchSID';
+import getSID from '@/components/fetchSID';
 import { count } from 'console';
 
 const CryptoContractsPage: React.FC = () => {
@@ -16,7 +16,7 @@ const CryptoContractsPage: React.FC = () => {
 
   useEffect(() => {
     const fetchSid = async () => {
-      const fetchedSid = await getCList();
+      const fetchedSid = await getSID();
       if (fetchedSid !== null) {
         setSid(fetchedSid);
       }
@@ -27,7 +27,7 @@ const CryptoContractsPage: React.FC = () => {
 
   useEffect(() => {
     if (sid) {
-      let socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
+      const socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
       
       socket.onopen = function (event) {
         console.log("WebSocket is open now.");
@@ -35,8 +35,7 @@ const CryptoContractsPage: React.FC = () => {
       };
   
       socket.onclose = function (event) {
-          console.log("Web socket is closed now")
-          socket = new WebSocket(`wss://fawss.pi42.com/socket.io/?EIO=4&transport=websocket&sid=${sid}`);
+        location.reload();
       };
   
       socket.onerror = function (error) {
