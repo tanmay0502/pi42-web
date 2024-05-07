@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 type Contract = {
@@ -15,35 +16,57 @@ type Margin = {
 };
 
 const Table = ({ contracts, margin }: { contracts: Contract[], margin: Margin }) => {
-  const handleShare = (contract: Contract) => {
-    const message = `Welcome to Pi42! Today's update on ${contract.name}.
-      Symbol name: ${contract.name}
-      Last price: ${contract.lastPrice}
-      24 hour change percentage: ${contract.priceChangePercent}
-      24 hour volume: ${contract.baseAssetVolume}
-      24 hour high: ${margin[contract.name]?.['24hrHigh'] || 'Loading..'}
-      24 hour low: ${margin[contract.name]?.['24hrLow'] || 'Loading..'}`;
 
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-    if (navigator.share) {
-      navigator.share({
-        text: message,
-        url: whatsappUrl,
-      }).catch(console.error);
-    } else {
+    const generateMessage = (contract: Contract) => {
+      return `Welcome to Pi42! Today's update on ${contract.name}.
+        Symbol name: ${contract.name}
+        Last price: ${contract.lastPrice}
+        24 hour change percentage: ${contract.priceChangePercent}
+        24 hour volume: ${contract.baseAssetVolume}
+        24 hour high: ${margin[contract.name]?.['24hrHigh'] || 'Loading..'}
+        24 hour low: ${margin[contract.name]?.['24hrLow'] || 'Loading..'}`;
+    };
+    
+    const handleDownload = (contract: Contract) => {
+      const message = generateMessage(contract);
+      const fileName = `${contract.name}_details.txt`;
+    
       const element = document.createElement('a');
       element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(message));
-      element.setAttribute('download', `${contract.name}_details.txt`);
-
+      element.setAttribute('download', fileName);
+    
       element.style.display = 'none';
       document.body.appendChild(element);
-
+    
       element.click();
-
+    
       document.body.removeChild(element);
-    }
-  };
+    };
+    
+    const handleShare = (contract: Contract) => {
+      const message = generateMessage(contract);
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    
+      if (navigator.share) {
+        navigator.share({
+          text: message,
+          url: whatsappUrl,
+        }).catch(console.error);
+      } else {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(message));
+        element.setAttribute('download', `${contract.name}_details.txt`);
+    
+        element.style.display = 'none';
+        document.body.appendChild(element);
+    
+        element.click();
+    
+        document.body.removeChild(element);
+      }
+    };
+  
 
   return (
     <table>
@@ -69,7 +92,12 @@ const Table = ({ contracts, margin }: { contracts: Contract[], margin: Margin })
             <td>{parseFloat(contract.baseAssetVolume).toLocaleString('en-IN')}</td>
             <td>{margin[contract.name]?.['24hrHigh'] ? parseFloat(margin[contract.name]['24hrHigh']).toLocaleString('en-IN') : 'Loading..'}</td>
             <td>{margin[contract.name]?.['24hrLow'] ? parseFloat(margin[contract.name]['24hrLow']).toLocaleString('en-IN') : 'Loading..'}</td>
-            <td><button onClick={() => handleShare(contract)}>Share</button></td>
+            <td>
+              <div className='flex'>
+                <Image className='cursor-pointer mx-2' height={25} width={25} src={'/whatsapp.svg'} alt="share" onClick={() => handleShare(contract)} />
+                <Image className='cursor-pointer ml-2' height={25} width={25} src={'/download.png'} alt="share" onClick={() => handleDownload(contract)} />  
+              </div>
+            </td>
           </tr>
         ))}
 
