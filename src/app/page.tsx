@@ -1,8 +1,9 @@
 "use client"
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, User, signOut } from "firebase/auth";
-import SignIn from "./SignIn";
-import Dashboard from "./dashboard/dashboard";
+import SignIn from "@/components/SignIn";
+import Dashboard from "@/app/dashboard/dashboard";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -25,15 +26,24 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {user ? (
-        <>
-          <button className="signout" onClick={handleSignOut}>Sign Out</button>
-          <Dashboard />
-        </>
-      ) : (
-        <SignIn />
-      )}
-    </main>
+    <main className="main">
+      <Navbar user={user} handleSignOut={handleSignOut} />
+
+      <div className="container mx-auto py-10"> 
+        <h1 className="text-2xl pb-2">Crypto Contracts Dashboard</h1>
+        {user ? 
+        <div>
+          <p>Welcome, {user.displayName || 'User'}!</p>
+          <Dashboard /> 
+        </div>
+        : 
+        <div className="">
+          <p>Please sign in to access the dashboard</p>
+          <SignIn />
+        </div>
+
+        }
+      </div>
+  </main>
   );
 }

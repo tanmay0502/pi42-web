@@ -7,8 +7,11 @@ body{
 
 }
 .container{
-  font-family: 'Lato';
   text-align: center;
+}
+.main{
+  font-family: 'Lato';
+  width: 100%;
 }
 
 h1,p {
@@ -72,7 +75,42 @@ button:hover {
   color: #E77054;
 }
 
-.signout{
-  float: right;
-  background-color: #E77054;
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgb(251, 253, 255);
+  border-bottom-right-radius: 1%;
+  border-bottom-left-radius: 1%;
+  color: #141414 !important;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.signout {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signout:hover {
+  background-color: #ff7875;
 }

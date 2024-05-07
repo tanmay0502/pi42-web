@@ -109,8 +109,7 @@ const CryptoContractsPage: React.FC = () => {
   };
 
   return (
-    <div className='container'>
-        <h1>Crypto Contracts</h1>
+    <div className=''>
         <p className=''>Sort By 24 Hour Percentage Change?</p>
         <select value={sortOption} onChange={handleSortChange}>
           <option value="default">Default</option>
