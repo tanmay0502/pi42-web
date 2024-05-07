@@ -7,7 +7,10 @@ body{
 
 }
 .container{
+  opacity: 0;
   text-align: center;
+  animation: pop 0.5s ease forwards;
+  animation-delay: 0.5s;
 }
 .main{
   font-family: 'Lato';
@@ -37,7 +40,6 @@ select:focus {
 
 
 table {
-
   background-color: #141414;
   color:white;
   width: 100%;
@@ -50,7 +52,7 @@ table {
 }
 
 th, td {
-  padding: 12px;
+  padding: 15px 30px; 
   text-align: right;
 }
 
@@ -85,6 +87,8 @@ button:hover {
   border-bottom-right-radius: 1%;
   border-bottom-left-radius: 1%;
   color: #141414 !important;
+  animation: slideDown 0.5s ease forwards;
+  transform: translateY(-100%);
 }
 
 .logo {
@@ -113,4 +117,28 @@ button:hover {
 
 .signout:hover {
   background-color: #ff7875;
+}
+
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 0; 
+  }
+  50% {
+    opacity: 1; 
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1; 
+  }
 }

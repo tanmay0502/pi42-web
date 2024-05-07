@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged, User, signOut } from "firebase/auth";
 import SignIn from "@/components/SignIn";
 import Dashboard from "@/app/dashboard/dashboard";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -38,7 +39,8 @@ export default function Home() {
         </div>
         : 
         <div className="">
-          <p>Please sign in to access the dashboard</p>
+          <Image height={300} width={300} src={'/pi42Full.jpeg'} alt="Logo" className="mx-auto" />
+          <p className="pt-10">Please sign in to access the dashboard</p>
           <SignIn />
         </div>
 
